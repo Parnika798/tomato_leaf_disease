@@ -1,76 +1,31 @@
-
-
-# 🌿 Tomato Leaf Disease & Severity Prediction (Multi-Task Learning)
+# 🌿 Tomato Leaf Disease & Severity Prediction using Multi-Task Learning
 
 ## 📌 Overview
 
-This project presents a **multi-task deep learning framework** for automated plant disease analysis. The model simultaneously performs:
+This project presents a **multi-task learning (MTL) framework** for simultaneous:
 
-* 🌱 **Disease Classification** (6 classes)
-* 📊 **Severity Prediction** (3 stages)
+* 🌱 Disease Classification (6 classes)
+* 📊 Disease Severity Prediction (3 stages)
 
-from a **single tomato leaf image**, improving decision-making for precision agriculture.
+from a **single tomato leaf image**.
 
----
-
-## 🚀 Key Features
-
-* ✅ Multi-task learning (MTL) architecture
-* ✅ Handles **partial labels** (severity only for diseased samples)
-* ✅ **Cross-task attention mechanism** (disease → severity guidance)
-* ✅ Advanced augmentations (Albumentations + MixUp + CutMix)
-* ✅ Class imbalance handling using **WeightedRandomSampler**
-* ✅ BMC-level research implementation
+Unlike traditional approaches that focus only on classification, this work jointly models both tasks to provide a more **comprehensive understanding of plant health**, which is essential for precision agriculture.
 
 ---
 
-## 🧠 Problem Formulation
+## 🧠 Motivation
 
-Given an input image:
+Most deep learning models in plant disease analysis are limited to **disease identification**, ignoring **severity estimation**, which is crucial for:
 
-[
-x \in \mathbb{R}^{3 \times 224 \times 224}
-]
+* Treatment planning
+* Yield prediction
+* Agricultural decision-making
 
-The model predicts:
+This project addresses this gap by:
 
-* Disease: ( y_d \in {1,...,6} )
-* Severity: ( y_s \in {1,...,3} )
-
-Each sample:
-[
-(x, y_d, y_s, m)
-]
-
-* ( y_s = -1 ) if unavailable
-* ( m \in {0,1} ) → severity mask
-
----
-
-## 📂 Dataset
-
-* Source: Public Kaggle dataset
-* Link : https://www.kaggle.com/datasets/janiruwalisingha/tomato-leaf-disease-severity-dataset
-* Combined:
-
-  * Disease classification dataset
-  * Severity prediction dataset
-
-Unified into a custom **multi-task dataset pipeline** 
-
-### ⚙️ Preprocessing
-
-* Resize → 224×224
-* Normalize → ImageNet stats
-
-### 🔁 Augmentations
-
-* Random crop, flip
-* Color jitter
-* Gaussian noise, blur
-* Elastic transform
-* Coarse dropout
-* MixUp & CutMix
+* Learning **shared representations** across tasks
+* Modeling **inter-task relationships**
+* Handling **partial supervision** (missing severity labels)
 
 ---
 
@@ -80,84 +35,128 @@ Unified into a custom **multi-task dataset pipeline**
 
 * Pretrained **ResNet50**
 
-### 🔹 Attention Module
+### 🔹 Feature Refinement
 
-* **CBAM (Channel + Spatial Attention)**
+* **CBAM (Convolutional Block Attention Module)**
 
-### 🔹 Heads
+  * Channel attention
+  * Spatial attention
+
+### 🔹 Multi-Task Design
 
 * Disease Classification Head
 * Severity Prediction Head
 
 ### 🔹 Cross-Task Attention
 
-* Severity branch uses disease features
-* Disease gradients **detached** to prevent interference
+* Severity prediction is guided using disease features
+* Disease features are **detached from gradient flow** to avoid interference
+
+This enables effective **inter-task feature sharing** while maintaining stability.
+
+---
+
+## 📂 Dataset
+
+* Public **Kaggle Tomato Leaf Dataset**
+
+### Classes
+
+**Disease (6 classes):**
+
+* Bacterial Spot
+* Early Blight
+* Late Blight
+* Leaf Mold
+* Septoria Leaf Spot
+* Healthy
+
+**Severity (3 stages):**
+
+* Early
+* Mid
+* Late
+
+⚠️ Severity labels are available **only for diseased samples**, making this a **partial supervision problem** 
+
+---
+
+## ⚙️ Preprocessing & Augmentation
+
+* Resize → 224 × 224
+* Normalize → ImageNet statistics
+
+### Augmentations
+
+* Geometric transformations
+* Color perturbations
+* MixUp
+* CutMix
+
+These improve generalization under real-world variations.
 
 ---
 
 ## 📉 Loss Function
 
 [
-\mathcal{L} = \lambda_d \mathcal{L}_d + \lambda_s \mathcal{L}_s
+\mathcal{L} = 0.6 \mathcal{L}*{disease} + 0.4 \mathcal{L}*{severity}
 ]
 
-* ( \lambda_d = 0.6 ), ( \lambda_s = 0.4 )
 * Cross-entropy with label smoothing
-
-### ⚠️ Masked Severity Loss
-
-[
-\mathcal{L}_s =
-\begin{cases}
-\text{CE}(\hat{y}_s, y_s) & m=1 \
-0 & m=0
-\end{cases}
-]
+* **Masked severity loss** for missing labels
 
 ---
 
 ## 🏋️ Training Details
 
-| Parameter         | Value           |
-| ----------------- | --------------- |
-| Optimizer         | AdamW           |
-| LR                | 1e-4            |
-| Batch Size        | 32              |
-| Epochs            | 50              |
-| Scheduler         | Warmup + Cosine |
-| Early Stopping    | Patience = 10   |
-| Gradient Clipping | 1.0             |
-
-### 🧊 Training Strategy
-
-* Freeze backbone → first 5 epochs
-* Then full fine-tuning
+| Parameter       | Value            |
+| --------------- | ---------------- |
+| Optimizer       | AdamW            |
+| Batch Size      | 32               |
+| Epochs          | 50               |
+| Scheduler       | Cosine Annealing |
+| Early Stopping  | Yes              |
+| Backbone Freeze | First 5 epochs   |
 
 ---
 
-## 📊 Evaluation Metrics
+## 📊 Results
 
-* Accuracy
-* Precision
-* Recall
-* F1-score (weighted)
-* AUC
+| Task                   | Accuracy   | F1 Score | AUC    |
+| ---------------------- | ---------- | -------- | ------ |
+| Disease Classification | **97.85%** | 0.9786   | 0.9984 |
+| Severity Prediction    | **77.66%** | 0.7766   | 0.9297 |
 
-Evaluated separately for:
-
-* Disease classification
-* Severity prediction
+* High accuracy for disease classification
+* Strong improvement in severity prediction compared to single-task learning
+* High AUC values indicate excellent discriminative capability across both tasks 
 
 ---
 
-## 🧪 Ablation Studies
+## 🔬 Experiments
 
-* MTL vs Single-task
-* Loss weight tuning
-* Backbone comparison
-* Attention module impact
+### 1. Multi-Task vs Single-Task Learning
 
+| Model       | Severity F1 |
+| ----------- | ----------- |
+| Single Task | 0.3248      |
+| Multi-Task  | 0.7488      |
+
+👉 Demonstrates effectiveness of shared learning
+
+---
+
+### 2. Ablation Study: Cross-Task Attention
+
+| Model                   | Disease Accuracy | Severity F1 |
+| ----------------------- | ---------------- | ----------- |
+| Full Model              | 97.85%           | 0.7766      |
+| Without Cross-Attention | 96.16%           | 0.7551      |
+
+👉 Cross-task interaction improves performance, especially for severity prediction 
+
+---
 
 ## 🧾 Requirements
 
@@ -166,15 +165,14 @@ Evaluated separately for:
 * Albumentations
 * NumPy
 * Scikit-learn
-* OpenCV
 
 ---
 
-## 💡 Key Contributions
+## 📌 Key Contributions
 
-* Novel **cross-task attention mechanism**
-* Effective **handling of missing labels via masking**
-* Strong generalization via hybrid augmentation strategy
-* Real-world applicable precision agriculture solution
+* Multi-task framework for joint disease and severity prediction
+* Cross-task attention for modeling inter-task dependencies
+* Effective handling of **partial labels via masking**
+* Significant improvement in severity prediction over single-task models
 
-
+---
