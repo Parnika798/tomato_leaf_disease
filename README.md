@@ -130,7 +130,13 @@ These improve generalization under real-world variations.
 
 * High accuracy for disease classification
 * Strong improvement in severity prediction compared to single-task learning
-* High AUC values indicate excellent discriminative capability across both tasks 
+* High AUC values indicate excellent discriminative capability across both tasks
+
+<img width="991" height="731" alt="cm_disease_resnet50" src="https://github.com/user-attachments/assets/b2d06f6d-e21e-4b5b-a8a9-7bdcf70f0c4e" />
+
+<img width="968" height="731" alt="cm_severity_resnet50" src="https://github.com/user-attachments/assets/af3642cb-36bd-4d4a-96cd-d563b43c631d" />
+
+
 
 ---
 
