@@ -60,6 +60,8 @@ This enables effective **inter-task feature sharing** while maintaining stabilit
 
 * Public **Kaggle Tomato Leaf Dataset**
 
+https://www.kaggle.com/datasets/janiruwalisingha/tomato-leaf-disease-severity-dataset
+
 ### Classes
 
 **Disease (6 classes):**
