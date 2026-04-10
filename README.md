@@ -1,6 +1,4 @@
-Here’s a **complete, GitHub-ready README.md** tailored to your project (BMC-level, end-to-end, clean, and professional). You can paste this directly into your repo.
 
----
 
 # 🌿 Tomato Leaf Disease & Severity Prediction (Multi-Task Learning)
 
@@ -52,6 +50,7 @@ Each sample:
 ## 📂 Dataset
 
 * Source: Public Kaggle dataset
+* Link : https://www.kaggle.com/datasets/janiruwalisingha/tomato-leaf-disease-severity-dataset
 * Combined:
 
   * Disease classification dataset
@@ -159,60 +158,6 @@ Evaluated separately for:
 * Backbone comparison
 * Attention module impact
 
----
-
-## 📁 Project Structure
-
-```
-├── data/
-├── models/
-│   ├── backbone.py
-│   ├── cbam.py
-│   ├── multitask_model.py
-├── dataset/
-│   ├── dataset.py
-│   ├── augmentations.py
-├── training/
-│   ├── train.py
-│   ├── loss.py
-│   ├── scheduler.py
-├── evaluation/
-│   ├── metrics.py
-│   ├── confusion_matrix.py
-├── utils/
-├── notebooks/
-├── requirements.txt
-└── README.md
-```
-
----
-
-## ⚙️ Installation
-
-```bash
-git clone https://github.com/your-username/tomato-mtl.git
-cd tomato-mtl
-
-pip install -r requirements.txt
-```
-
----
-
-## ▶️ Usage
-
-### Train Model
-
-```bash
-python training/train.py
-```
-
-### Evaluate Model
-
-```bash
-python evaluation/evaluate.py
-```
-
----
 
 ## 🧾 Requirements
 
@@ -232,33 +177,4 @@ python evaluation/evaluate.py
 * Strong generalization via hybrid augmentation strategy
 * Real-world applicable precision agriculture solution
 
----
 
-## 📌 Future Work
-
-* Extend to multi-crop datasets
-* Deploy as mobile/web app
-* Integrate real-time disease detection
-
----
-
-## 📜 License
-
-MIT License
-
----
-
-## 👩‍💻 Author
-
-**Parnika Jain**
-B.Tech AI & ML
-
----
-
-If you want next level (recommended for placements/research):
-👉 I can also generate:
-
-* ⭐ **GitHub badges (cool factor)**
-* 📊 **Results section with tables**
-* 📸 **Architecture diagram (clean CVPR-style)**
-* 🚀 **Deployment section (Streamlit / API)**
