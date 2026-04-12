@@ -1,11 +1,11 @@
 # 🌿 Tomato Leaf Disease & Severity Prediction using Multi-Task Learning
 
-## 📌 Overview
+##  Overview
 
 This project presents a **multi-task learning (MTL) framework** for simultaneous:
 
-* 🌱 Disease Classification (6 classes)
-* 📊 Disease Severity Prediction (3 stages)
+*  Disease Classification (6 classes)
+*  Disease Severity Prediction (3 stages)
 
 from a **single tomato leaf image**.
 
@@ -13,7 +13,7 @@ Unlike traditional approaches that focus only on classification, this work joint
 
 ---
 
-## 🧠 Motivation
+##  Motivation
 
 Most deep learning models in plant disease analysis are limited to **disease identification**, ignoring **severity estimation**, which is crucial for:
 
@@ -29,7 +29,7 @@ This project addresses this gap by:
 
 ---
 
-## 🏗️ Model Architecture
+##  Model Architecture
 
 ### 🔹 Backbone
 
@@ -56,7 +56,7 @@ This enables effective **inter-task feature sharing** while maintaining stabilit
 
 ---
 
-## 📂 Dataset
+##  Dataset
 
 * Public **Kaggle Tomato Leaf Dataset**
 
@@ -79,11 +79,11 @@ https://www.kaggle.com/datasets/janiruwalisingha/tomato-leaf-disease-severity-da
 * Mid
 * Late
 
-⚠️ Severity labels are available **only for diseased samples**, making this a **partial supervision problem** 
+Severity labels are available **only for diseased samples**, making this a **partial supervision problem** 
 
 ---
 
-## ⚙️ Preprocessing & Augmentation
+##  Preprocessing & Augmentation
 
 * Resize → 224 × 224
 * Normalize → ImageNet statistics
@@ -99,7 +99,7 @@ These improve generalization under real-world variations.
 
 ---
 
-## 📉 Loss Function
+## Loss Function
 
 [
 \mathcal{L} = 0.6 \mathcal{L}*{disease} + 0.4 \mathcal{L}*{severity}
@@ -110,7 +110,7 @@ These improve generalization under real-world variations.
 
 ---
 
-## 🏋️ Training Details
+##  Training Details
 
 | Parameter       | Value            |
 | --------------- | ---------------- |
@@ -123,7 +123,7 @@ These improve generalization under real-world variations.
 
 ---
 
-## 📊 Results
+##  Results
 
 | Task                   | Accuracy   | F1 Score | AUC    |
 | ---------------------- | ---------- | -------- | ------ |
@@ -151,7 +151,7 @@ These improve generalization under real-world variations.
 | Single Task | 0.3248      |
 | Multi-Task  | 0.7488      |
 
-👉 Demonstrates effectiveness of shared learning
+ Demonstrates effectiveness of shared learning
 
 ---
 
@@ -162,11 +162,11 @@ These improve generalization under real-world variations.
 | Full Model              | 97.85%           | 0.7766      |
 | Without Cross-Attention | 96.16%           | 0.7551      |
 
-👉 Cross-task interaction improves performance, especially for severity prediction 
+ Cross-task interaction improves performance, especially for severity prediction 
 
 ---
 
-## 🧾 Requirements
+##  Requirements
 
 * Python 3.8+
 * PyTorch
@@ -176,7 +176,7 @@ These improve generalization under real-world variations.
 
 ---
 
-## 📌 Key Contributions
+##  Key Contributions
 
 * Multi-task framework for joint disease and severity prediction
 * Cross-task attention for modeling inter-task dependencies
